@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WatchEarnBot - Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a67d8;
+            --secondary: #48bb78;
+            --accent: #ed8936;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --error: #e53e3e;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --text-muted: #a0aec0;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f7fafc;
+            --bg-card: #ffffff;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .admin-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--bg-secondary);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            margin: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--secondary), var(--success));
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--error), #dc2626);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), var(--accent));
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid var(--border);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-card.primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .stat-card.success {
+            background: linear-gradient(135deg, var(--secondary), var(--success));
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        .stat-card.warning {
+            background: linear-gradient(135deg, var(--accent), var(--warning));
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .table th,
+        .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .table tr:hover {
+            background: var(--bg-secondary);
+        }
+
+        .badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .badge-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .badge-error {
+            background: var(--error);
+            color: white;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-xl);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .notification.error {
+            background: var(--error);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            padding: 1rem 2rem;
+            border: 2px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .tab-button.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .withdrawal-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .withdrawal-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .withdrawal-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .config-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .admin-header h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tab-buttons {
+                flex-direction: column;
+            }
+
+            .table-container {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Section -->
+    <div id="loginSection" class="container">
+        <div class="admin-header">
+            <h1><i class="fas fa-shield-alt"></i> Admin Panel</h1>
+            <p>WatchEarnBot Management Dashboard</p>
+        </div>
+
+        <div class="card">
+            <div class="login-form">
+                <h3 style="margin-bottom: 2rem; text-align: center;">Admin Login</h3>
+                <form onsubmit="login(event)">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="dashboardSection" class="container hidden">
+        <button class="btn btn-danger logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+
+        <div class="admin-header">
+            <h1><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h1>
+            <p>Welcome back, Administrator</p>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card primary">
+                <div class="stat-number" id="totalUsers">0</div>
+                <div class="stat-label">Total Users</div>
+            </div>
+            <div class="stat-card success">
+                <div class="stat-number" id="totalEarnings">$0</div>
+                <div class="stat-label">Total Earnings</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-number" id="pendingWithdrawals">0</div>
+                <div class="stat-label">Pending Withdrawals</div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="showTab('users')">
+                <i class="fas fa-users"></i> Users Management
+            </button>
+            <button class="tab-button" onclick="showTab('withdrawals')">
+                <i class="fas fa-money-bill-wave"></i> Withdrawals
+            </button>
+            <button class="tab-button" onclick="showTab('broadcast')">
+                <i class="fas fa-bullhorn"></i> Broadcast Message
+            </button>
+            <button class="tab-button" onclick="showTab('settings')">
+                <i class="fas fa-cog"></i> Bot Settings
+            </button>
+        </div>
+
+        <!-- Users Management Tab -->
+        <div id="usersTab" class="tab-content active">
+            <div class="card">
+                <h3><i class="fas fa-users"></i> Users Management</h3>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Username</th>
+                                <th>Balance</th>
+                                <th>Coins</th>
+                                <th>Ads Watched</th>
+                                <th>Referrals</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Withdrawals Tab -->
+        <div id="withdrawalsTab" class="tab-content">
+            <div class="card">
+                <h3><i class="fas fa-money-bill-wave"></i> Withdrawal Requests</h3>
+                <div id="withdrawalsList">
+                    <p style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                        No withdrawal requests at the moment
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Broadcast Message Tab -->
+        <div id="broadcastTab" class="tab-content">
+            <div class="card">
+                <h3><i class="fas fa-bullhorn"></i> Send Broadcast Message</h3>
+                <div class="config-form">
+                    <div class="form-group">
+                        <label>Message Text</label>
+                        <textarea id="broadcastMessage" class="form-control" rows="5" placeholder="Enter your message here..." style="resize: vertical;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="sendToAllUsers" checked style="margin-right: 0.5rem;">
+                            Send to all users
+                        </label>
+                    </div>
+                    <div style="text-align: center;">
+                        <button class="btn btn-primary" onclick="sendBroadcastMessage()">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </div>
+                    <div id="broadcastStatus" style="margin-top: 1rem; text-align: center; font-weight: 600;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settingsTab" class="tab-content">
+            <div class="card">
+                <h3><i class="fas fa-cog"></i> Bot Configuration</h3>
+                <div class="config-form">
+                    <div class="form-group">
+                        <label>Ad Reward (hix per ad)</label>
+                        <input type="number" id="adReward" class="form-control" value="8">
+                    </div>
+                    <div class="form-group">
+                        <label>Daily Ad Limit</label>
+                        <input type="number" id="dailyAdLimit" class="form-control" value="105">
+                    </div>
+                    <div class="form-group">
+                        <label>Referral Bonus (USD)</label>
+                        <input type="number" step="0.000001" id="referralBonus" class="form-control" value="0.010000">
+                    </div>
+                    <div class="form-group">
+                        <label>Minimum TON Withdrawal (USD)</label>
+                        <input type="number" step="0.000001" id="minTON" class="form-control" value="0.100000">
+                    </div>
+                    <div class="form-group">
+                        <label>Minimum TRX Withdrawal (USD)</label>
+                        <input type="number" step="0.000001" id="minTRX" class="form-control" value="0.500000">
+                    </div>
+                    <div class="form-group">
+                        <label>Minimum USDT Withdrawal (USD)</label>
+                        <input type="number" step="0.000001" id="minUSDT" class="form-control" value="5.000000">
+                    </div>
+                    <button class="btn btn-success" onclick="updateSettings()">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isLoggedIn = false;
+        let adminData = null;
+
+        // Check if already logged in
+        if (localStorage.getItem('adminLoggedIn') === 'true') {
+            isLoggedIn = true;
+            showDashboard();
+        }
+
+        function login(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === 'hkm' && password === 'dhm') {
+                isLoggedIn = true;
+                localStorage.setItem('adminLoggedIn', 'true');
+                showDashboard();
+                showNotification('Login successful! Welcome Admin');
+            } else {
+                showNotification('Invalid credentials', 'error');
+            }
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            localStorage.removeItem('adminLoggedIn');
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            showNotification('Logged out successfully');
+        }
+
+        function showDashboard() {
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('dashboardSection').classList.remove('hidden');
+            loadAdminData();
+        }
+
+        function loadAdminData() {
+            fetch('/api/admin/data')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        adminData = data;
+                        updateDashboard();
+                        loadConfigSettings();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading admin data:', error);
+                    showNotification('Error loading data', 'error');
+                });
+        }
+
+        function loadConfigSettings() {
+            if (!adminData || !adminData.config) return;
+
+            const config = adminData.config;
+            document.getElementById('adReward').value = config.adReward || 8;
+            document.getElementById('dailyAdLimit').value = config.dailyAdLimit || 105;
+            document.getElementById('referralBonus').value = config.referralBonus || 0.010000;
+            document.getElementById('minTON').value = config.minWithdrawal.TON || 0.100000;
+            document.getElementById('minTRX').value = config.minWithdrawal.TRX || 0.500000;
+            document.getElementById('minUSDT').value = config.minWithdrawal.USDT || 5.000000;
+        }
+
+        function updateDashboard() {
+            if (!adminData) return;
+
+            // Update statistics
+            document.getElementById('totalUsers').textContent = adminData.totalUsers;
+            document.getElementById('totalEarnings').textContent = '$' + adminData.totalEarnings.toFixed(6);
+            document.getElementById('pendingWithdrawals').textContent = adminData.pendingWithdrawals;
+
+            // Update users table
+            const usersTableBody = document.getElementById('usersTableBody');
+            usersTableBody.innerHTML = '';
+
+            adminData.users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.userId}</td>
+                    <td>${user.username}</td>
+                    <td>$${user.balance.toFixed(6)}</td>
+                    <td>${user.coins}</td>
+                    <td>${user.adsWatched.method1}</td>
+                    <td>${user.referrals.length}</td>
+                    <td>
+                        <button class="btn btn-warning" onclick="editUser('${user.userId}')">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteUser('${user.userId}')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+                usersTableBody.appendChild(row);
+            });
+
+            // Update withdrawals
+            updateWithdrawalsList();
+        }
+
+        function updateWithdrawalsList() {
+            const withdrawalsList = document.getElementById('withdrawalsList');
+
+            if (adminData.withdrawals && adminData.withdrawals.length > 0) {
+                withdrawalsList.innerHTML = '';
+                adminData.withdrawals.forEach((withdrawal, index) => {
+                    const withdrawalDiv = document.createElement('div');
+                    withdrawalDiv.className = 'withdrawal-item';
+                    withdrawalDiv.innerHTML = `
+                        <div class="withdrawal-header">
+                            <h4>Withdrawal Request #${index + 1}</h4>
+                            <span class="badge badge-warning">Pending</span>
+                        </div>
+                        <div class="withdrawal-info">
+                            <div><strong>User:</strong> ${withdrawal.username} (${withdrawal.userId})</div>
+                            <div><strong>Currency:</strong> ${withdrawal.currency}</div>
+                            <p><strong>Amount:</strong> $${withdrawal.amount.toFixed(6)}</p>
+                            ${withdrawal.currency === 'FLEXY' ? 
+                                `<p><strong>Phone Number:</strong> ${withdrawal.phoneNumber || 'undefined'}</p>` : 
+                                `<p><strong>Binance ID:</strong> ${withdrawal.binanceId || 'undefined'}</p>`
+                            }
+                            <p><strong>Date:</strong> ${new Date(withdrawal.date).toLocaleString()}</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-success" onclick="approveWithdrawal(${index})">
+                                <i class="fas fa-check"></i> Approve
+                            </button>
+                            <button class="btn btn-danger" onclick="rejectWithdrawal(${index})">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                        </div>
+                    `;
+                    withdrawalsList.appendChild(withdrawalDiv);
+                });
+            } else {
+                withdrawalsList.innerHTML = `
+                    <p style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                        No withdrawal requests at the moment
+                    </p>
+                `;
+            }
+        }
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + 'Tab').classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        function editUser(userId) {
+            const user = adminData.users.find(u => u.userId === userId);
+            if (!user) return;
+
+            const newBalance = prompt(`Edit balance for ${user.username}:`, user.balance);
+            const newCoins = prompt(`Edit coins for ${user.username}:`, user.coins);
+
+            if (newBalance !== null && newCoins !== null) {
+                fetch('/api/admin/edit-user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: userId,
+                        balance: parseFloat(newBalance),
+                        coins: parseInt(newCoins)
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showNotification('User updated successfully');
+                        loadAdminData();
+                    } else {
+                        showNotification('Error updating user', 'error');
+                    }
+                });
+            }
+        }
+
+        function deleteUser(userId) {
+            const user = adminData.users.find(u => u.userId === userId);
+            if (!user) return;
+
+            if (confirm(`Are you sure you want to delete user ${user.username}?`)) {
+                fetch('/api/admin/delete-user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: userId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showNotification('User deleted successfully');
+                        loadAdminData();
+                    } else {
+                        showNotification('Error deleting user', 'error');
+                    }
+                });
+            }
+        }
+
+        function approveWithdrawal(index) {
+            fetch('/api/admin/approve-withdrawal', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ withdrawalIndex: index })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Withdrawal approved successfully');
+                    loadAdminData();
+                } else {
+                    showNotification('Error approving withdrawal', 'error');
+                }
+            });
+        }
+
+        function rejectWithdrawal(index) {
+            fetch('/api/admin/reject-withdrawal', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ withdrawalIndex: index })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Withdrawal rejected successfully');
+                    loadAdminData();
+                } else {
+                    showNotification('Error rejecting withdrawal', 'error');
+                }
+            });
+        }
+
+        function updateSettings() {
+            const settings = {
+                adReward: parseInt(document.getElementById('adReward').value),
+                dailyAdLimit: parseInt(document.getElementById('dailyAdLimit').value),
+                referralBonus: parseFloat(document.getElementById('referralBonus').value),
+                minWithdrawal: {
+                    TON: parseFloat(document.getElementById('minTON').value),
+                    TRX: parseFloat(document.getElementById('minTRX').value),
+                    USDT: parseFloat(document.getElementById('minUSDT').value)
+                }
+            };
+
+            console.log('Sending settings:', settings);
+
+            fetch('/api/admin/update-settings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(settings)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response:', data);
+                if (data.success) {
+                    showNotification('Settings updated successfully');
+                    // Update local adminData
+                    if (adminData) {
+                        adminData.config = { ...adminData.config, ...settings };
+                    }
+                    // Reload data to reflect changes
+                    loadAdminData();
+                } else {
+                    showNotification('Error updating settings: ' + (data.message || 'Unknown error'), 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating settings:', error);
+                showNotification('Error updating settings', 'error');
+            });
+        }
+
+        function sendBroadcastMessage() {
+            const message = document.getElementById('broadcastMessage').value.trim();
+            const sendToAll = document.getElementById('sendToAllUsers').checked;
+
+            if (!message) {
+                showNotification('Please enter a message', 'error');
+                return;
+            }
+
+            const statusDiv = document.getElementById('broadcastStatus');
+            statusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending message...';
+            statusDiv.style.color = 'var(--primary)';
+
+            fetch('/api/admin/broadcast-message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: message,
+                    sendToAll: sendToAll
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('Broadcast message sent successfully');
+                    statusDiv.innerHTML = `<i class="fas fa-check-circle"></i> Message sent to ${data.sentCount} users`;
+                    statusDiv.style.color = 'var(--success)';
+                    document.getElementById('broadcastMessage').value = '';
+                } else {
+                    showNotification('Error sending broadcast message: ' + (data.message || 'Unknown error'), 'error');
+                    statusDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Failed to send message';
+                    statusDiv.style.color = 'var(--error)';
+                }
+            })
+            .catch(error => {
+                console.error('Error sending broadcast message:', error);
+                showNotification('Error sending broadcast message', 'error');
+                statusDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Network error';
+                statusDiv.style.color = 'var(--error)';
+            });
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : 'exclamation-triangle'}"></i> ${message}`;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100px)';
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Auto refresh data every 30 seconds
+        setInterval(() => {
+            if (isLoggedIn) {
+                loadAdminData();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
