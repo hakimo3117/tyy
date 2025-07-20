@@ -1,17 +1,33 @@
 {
-  "name": "nodejs",
+  "name": "watch-earn-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "Telegram bot for earning by watching ads with web interface",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "build": "npm install",
+    "vercel-build": "npm run build",
+    "dev": "nodemon index.js",
+    "register-webhook": "node register-webhook.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "telegram",
+    "bot",
+    "earn",
+    "ads"
+  ],
+  "author": "hakimo3117",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^22.13.11",
     "express": "^5.1.0",
-    "node-telegram-bot-api": "^0.66.0"
+    "node-telegram-bot-api": "^0.66.0",
+    "axios": "^1.6.7",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=18.x"
   }
 }
